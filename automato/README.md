@@ -16,5 +16,5 @@ baixando o arquivo automato.exe basta digitar na linha de comando:
 ./automato.exe [sua fonte de expressões]
 você pode digitar a(s) expressão(ões) manualmente ou referenciar um arquivo de texto.
 
-##Dificuldades na implementação:##
+## Dificuldades na implementação:
 Não se aplica
