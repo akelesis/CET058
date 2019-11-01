@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+int main() {
+  int x = 9;
+  unsigned int = 10;
+  float num = 65.25;
+
+  printf("Insira o seu peso em quilos: ")
+  scanf("%f", &num)
+
+  if (x > 10) {
+    printf("X é maior que dez!");
+  }
+  else{
+    printf("num é igual a %f", num);
+  }
+}
