@@ -90,8 +90,17 @@ namespace Automato{
                 }
                 
             }
+            
 
             foreach(string res in result){
+                if(status == 0){
+                    foreach(string expr in expressions){
+                        Console.Write(expr);
+                        Console.Write(" ");
+                    }
+                    Console.WriteLine("Expressão não reconhecida");
+                    return;
+                }
                 Console.WriteLine(res);
             }
 
