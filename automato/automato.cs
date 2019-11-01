@@ -10,11 +10,14 @@ namespace Automato{
         
         static void Main(string[] args){
 
+            int status = 0;
             string[] argument = args;
             string data = "";
-            List<string> dataParts = new List<string>();
 
-            List<String> expressions = new List<String>();
+            List<string> dataParts = new List<string>();
+            List<string> expressions = new List<string>();
+            List<string> result = new List<string>();
+
 
             try{
                 StreamReader sr = new StreamReader(argument[0]);
@@ -52,25 +55,44 @@ namespace Automato{
 
 
             foreach(string part in dataParts){
-                if(@Regex.IsMatch(part, expr01)){
-                    Console.WriteLine("<numero, "+part+">");
+                if(@Regex.IsMatch(part, expr01) && status == 0){
+                    result.Add("<numero, "+part+">");
+                    status = 1;
+                    continue;
                 }
-                if(@Regex.IsMatch(part, expr02)){
-                    Console.WriteLine("<subtração,>");
+                if(@Regex.IsMatch(part, expr02) && status == 1){
+                    result.Add("<subtração,>");
+                    status = 0;
+                    continue;
                 }
-                if(@Regex.IsMatch(part, expr03)){
-                    Console.WriteLine("<soma,>");
+                if(@Regex.IsMatch(part, expr03) && status == 1){
+                    result.Add("<soma,>");
+                    status = 0;
+                    continue;
                 }
-                if(@Regex.IsMatch(part, expr04)){
-                    Console.WriteLine("<multiplicação,>");
+                if(@Regex.IsMatch(part, expr04) && status == 1){
+                    result.Add("<multiplicação,>");
+                    status = 0;
+                    continue;
                 }
-                if(@Regex.IsMatch(part, expr05)){
-                    Console.WriteLine("<divisão,>");
+                if(@Regex.IsMatch(part, expr05) && status == 1){
+                    result.Add("<divisão,>");
+                    status = 0;
+                    continue;
                 }
-                if(!@Regex.IsMatch(part, expr01) && !@Regex.IsMatch(part, expr02) && !@Regex.IsMatch(part, expr03) && !@Regex.IsMatch(part, expr04) && !@Regex.IsMatch(part, expr05)){
-                    Console.WriteLine("<não identificado, "+part+">");
+                else{
+                    foreach(string expr in expressions){
+                        Console.Write(expr);
+                        Console.Write(" ");
+                    }
+                    Console.WriteLine("Expressão não reconhecida");
+                    return;
                 }
                 
+            }
+
+            foreach(string res in result){
+                Console.WriteLine(res);
             }
 
             return;
