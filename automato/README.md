@@ -1,0 +1,1 @@
+Algoritmo de reconhecimento de expressões matemáticas versão 1.0
