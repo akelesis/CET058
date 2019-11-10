@@ -12,9 +12,10 @@ Os unicos tipos de dados não primitivos da linguagem que foram utilizados são 
 não haviam restrições quanto à essas.
 
 ## Modo de usar:
-baixando o arquivo automato.exe basta digitar na linha de comando:
-./automato.exe [sua fonte de expressões]
+baixando o arquivo automato02.exe basta digitar na linha de comando:
+./automato02.exe [sua fonte de expressões]
 você pode digitar a(s) expressão(ões) manualmente ou referenciar um arquivo de texto.
 
 ## Dificuldades na implementação:
-Não se aplica
+Devido à algumas dificuldades para escapar o simbolo '*' quando passado como argumento na execução do programa em linha de comando
+ficou definido que o programa só deverá receber expressões numéricas em formato de string "[expressão]".

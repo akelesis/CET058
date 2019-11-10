@@ -35,10 +35,6 @@ namespace Automato{
                     if(arg != null){
                         expressions.Add(arg);
                     }
-                    if(arg.Equals('*')){
-                        expressions.Add("\\*");
-                    }
-                    
                 }
                 
             }
