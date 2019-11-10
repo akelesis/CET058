@@ -38,7 +38,6 @@ namespace Automato{
                     if(arg.Equals('*')){
                         expressions.Add("\\*");
                     }
-                    Console.Write(arg);
                     
                 }
                 

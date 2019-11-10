@@ -38,7 +38,6 @@ namespace Automato{
                     if(arg.Equals('*')){
                         expressions.Add("\\*");
                     }
-                    Console.Write(arg);
                     
                 }
                 
@@ -51,40 +50,48 @@ namespace Automato{
                 }
             }
 
-            const string expr01 = @"^[a-z][a-zA-Z0-9_]*";
-            const string expr02 = @"-";
-            const string expr03 = @"\+";
-            const string expr04 = @"\*";
-            const string expr05 = @"\/";
 
 
             foreach(string part in dataParts){
-                if(@Regex.IsMatch(part, expr01) && status == 0){
-                    result.Add("<identificador, "+part+">");
-                    status = 1;
+                
+                if((Int32.Parse(part[0].ToString()) >= 97 && Int32.Parse(part[0].ToString()) <= 122) && status == 0){
+                    String identificador = "";
+                    for(int i = 0; i < part.Length; i++){
+                        if((Int32.Parse(part[i].ToString()) >= 97 && Int32.Parse(part[i].ToString()) <= 122) && status == 0){
+                            identificador = identificador+part[i];
+                            status = 1;
+                        }
+                        if((Int32.Parse(part[i].ToString()) >= 65 && Int32.Parse(part[i].ToString()) <= 90) && status == 1){
+                            identificador = identificador+part[i];
+                        }
+                        if(Int32.Parse(part[i].ToString()) >= 97 && Int32.Parse(part[i].ToString()) <= 122 && status == 1){
+                            identificador = identificador+part[i];
+                        }
+                        if(Int32.Parse(part[i].ToString()) == 95 && status == 1){
+                            identificador = identificador+part[i];
+                        }
+                    }
+                    result.Add("<identificador, "+identificador+">");
                     continue;
                 }
-                if(@Regex.IsMatch(part, expr02) && status == 1){
+                if(Int32.Parse(part) == 52 && status == 1){
+                    result.Add("<multiplicacao,>");
+                    status = 0;
+                    continue;
+
+                }
+                if(Int32.Parse(part) == 53 && status == 1){
+                    result.Add("<adição,>");
+                    status = 0;
+                    continue;
+                }
+                if(Int32.Parse(part) == 55 && status == 1){
                     result.Add("<subtração,>");
                     status = 0;
                     continue;
                 }
-                if(@Regex.IsMatch(part, expr03) && status == 1){
-                    result.Add("<soma,>");
-                    status = 0;
-                    continue;
-                }
-                if(@Regex.IsMatch(part, expr04) && status == 1){
-                    result.Add("<multiplicação,>");
-                    status = 0;
-                    continue;
-                }
-                if(@Regex.IsMatch(part, expr05) && status == 1){
+                if(Int32.Parse(part) == 57 && status == 1){
                     result.Add("<divisão,>");
-                    status = 0;
-                    continue;
-                }
-                if(@Regex.IsMatch(part, @"\\n") && status == 1){
                     status = 0;
                     continue;
                 }
