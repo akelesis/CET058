@@ -2,7 +2,7 @@ Trabalho Final de Compiladores
 ==============================
 Introdução
 ----------
-Um compilador é a ferramenta utilizada para para realizar a tradução de uma linguagem de programação para a linguagem de máquina e assim permitir a produção de programas e sistemas computacionais como nós conhecemos hoje em dia.
+Um compilador é a ferramenta utilizada para realizar a tradução de uma linguagem de programação para a linguagem de máquina e assim permitir a produção de programas e sistemas computacionais como nós conhecemos hoje em dia.
 
 Apesar de ser popularmente conhecido por este termo único o que tratamos como compilador é na verdade uma série de programas que possuem funcionalidades que, unidas, são capazes de realizar tal tradução.
 
@@ -23,7 +23,13 @@ Só após este processo é que o programa computacional estará pronto para uso.
 
 Ferramentas
 -----------
-Introduzir as ferramentas utilizadas, suas características e possíveis uso, especialmente o Bison e o Flex.
+Para o projeto foram utilizadas as ferramentas Flex e Bison em conjuto com a linguagem C de forma a facilitar o desenvolvimento das duas primeiras etapas citadas acima.
+
+O Flex é um software para a geração de scanners (programas que reconhecem padrões léxicos no texto) e o Bison é um gerador de propósito geral que converte uma gramatica livre de contexto em um parser de liguagem regular deterministica ou generalizada a partir da tabela de parser LALR.
+
+No projeto o Flex foi fundamental para a análise léxica da linguagem proposta. Por meio de expressões regulares foram criados scanners capazes de verificar os tokens e separa-los no código de input.
+
+O Bison por sua vez, foi utilizado para a criação de regras de gramática para reconhecimento de estruturas da linguagem e para a geração da árvore sintática contendo essas estruturas. 
 
 ---
 
