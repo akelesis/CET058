@@ -21,7 +21,7 @@ utilize os exemplos no diretório "flex" como ponto de partida.
 	#include "parser.tab.h"
 %}
 
-PRIMITIVAS									"int"|"float"|"char"|"double"|"unsigned"|"signed"|"void"|"string"
+PRIMITIVAS									"int"|"float"|"char"|"double"
 PALAVRAS_RESERVADAS							"break"|"return"|"continue"
 ESTRUTURAS									"struct"|"typedef"
 CONDICIONAL									"if"|"switch"|"case"|"default"
