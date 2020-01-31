@@ -45,7 +45,6 @@ ABERTURA_COLCHETE							"\["
 FECHAMENTO_COLCHETE							"\]"
 STRING										\"(\\.|[^"\\])*\"
 CARACTER 									(\')(.)(\')
-ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 %%
 
 {PRIMITIVAS}								{strncpy(yylval.simbolo, yytext, 50); return PRIMITIVAS;}
@@ -62,6 +61,7 @@ ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 "/"											{return OPERADOR_DIV;}
 "\-"										{return OPERADOR_SUB;}
 "\,"                                        {return VIRGULA;}
+"\;"                                        {return PV;}
 {OPERACAO_LOGICA}							{strncpy(yylval.simbolo, yytext, 50); return OPERACAO_LOGICA;}
 {OPERADOR_LOGICO_ADD}						{return OPERADOR_LOGICO_ADD;}
 {OPERADOR_LOGICO_OR}						{return OPERADOR_LOGICO_OR;}
@@ -77,7 +77,6 @@ ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 {FECHAMENTO_COLCHETE}						{return FECHAMENTO_COLCHETE;}
 {STRING}									{strncpy(yylval.simbolo, yytext, 50); return STRING;}
 {CARACTER}									{strncpy(yylval.simbolo, yytext, 50); return CARACTER;}
-{ENDERECO}									{return ENDERECO;}
 "\n"                            			{return EOL;}
 
 %%

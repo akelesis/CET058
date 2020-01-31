@@ -77,10 +77,10 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %token FUNCAO
 %token VETOR
 %token TAMANHO_VETOR
-%token ENDERECO
 %token ELSE
 %token EOL
 %token VIRGULA
+%token PV
 
 %type<no> prog
 %type<no> fator
@@ -93,6 +93,7 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %type<no> primitivas
 %type<no> args
 %type<no> arg
+%type<no> else
 
 %type<simbolo> LOOP
 %type<simbolo> OPERACAO_LOGICA
@@ -121,6 +122,7 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %type<simbolo> FUNCAO
 %type<simbolo> ELSE
 %type<simbolo> VIRGULA
+%type<simbolo> PV
 
 
 %%
@@ -142,7 +144,7 @@ stmt: exp
 
                             $$ = novo_no("stmt", filhos, 3);
     }
-    | CONDICIONAL abertura exp fechamento abertura stmt fechamento {
+    | CONDICIONAL abertura exp fechamento abertura stmt PV fechamento {
                             No** filhos = (No**) malloc(sizeof(No*) * 3);
                             filhos[0] = novo_no("if", NULL, 0);
                             filhos[1] = $3;
@@ -150,7 +152,7 @@ stmt: exp
 
                             $$ = novo_no("stmt", filhos, 3);
     }
-    | CONDICIONAL abertura exp fechamento abertura stmt fechamento ELSE abertura stmt fechamento{
+    | CONDICIONAL abertura exp fechamento abertura stmt PV fechamento else{
                             No** filhos = (No**) malloc(sizeof(No*) * 3);
                             filhos[0] = novo_no("if", NULL, 0);
                             filhos[1] = $3;
@@ -158,7 +160,7 @@ stmt: exp
 
                             $$ = novo_no("stmt", filhos, 3);
     }
-    | LOOP abertura exp fechamento abertura stmt fechamento{
+    | LOOP abertura exp fechamento abertura stmt PV fechamento{
                             No** filhos = (No**) malloc(sizeof(No*) * 3);
                             filhos[0] = novo_no("while", NULL, 0);
                             filhos[1] = $3;
@@ -166,19 +168,19 @@ stmt: exp
 
                             $$ = novo_no("stmt", filhos, 3);
     }
-    | termo abertura fechamento {                          
+    | termo abertura fechamento PV {                          
                             No** filhos = (No**) malloc(sizeof(No*));
                             filhos[0] = novo_no($1, NULL, 0);
                             $$ = novo_no("funcao", filhos, 1); 
     }
-    | termo abertura args fechamento {
+    | termo abertura args fechamento PV {
                             No** filhos = (No**) malloc(sizeof(No*) * 2);
                             filhos[0] = $1;
                             filhos[1] = $3;
 
                             $$ = novo_no("funcao", filhos, 2);
     }
-    | primitivas fator abertura args fechamento abertura stmt fechamento {
+    | primitivas fator abertura args fechamento abertura stmt PV fechamento {
                             No** filhos = (No**) malloc(sizeof(No*) * 4);
                             filhos[0] = novo_no($2, NULL, 0);
                             filhos[1] = $4;
@@ -187,12 +189,21 @@ stmt: exp
 
                             $$ = novo_no("funcao", filhos, 4);
     }
-    | primitivas fator abertura fechamento abertura stmt fechamento {
+    | primitivas fator abertura fechamento abertura stmt PV fechamento {
                             No** filhos = (No**) malloc(sizeof(No*) * 2);
                             filhos[0] = novo_no($2, NULL, 0);
                             filhos[1] = $6;
 
                             $$ = novo_no("funcao", filhos, 2);
+    }
+;
+else:
+    | ELSE abertura stmt fechamento {
+                            No** filhos = (No**) malloc(sizeof(No*) * 2);
+                            filhos[0] = novo_no("if", NULL, 0);
+                            filhos[1] = $3;
+
+                            $$ = novo_no("stmt", filhos, 2);
     }
 ;
 args: arg                   {
@@ -215,7 +226,7 @@ arg:
     | primitivas termo {
                         No** filhos = (No**) malloc(sizeof(No*) * 2);
                         filhos[0] = $1;
-                        filhos[1] = $2;
+                        filhos[1] = novo_no($2, NULL, 0);;
 
                         $$ = novo_no("arg", filhos, 2);
     }
@@ -226,7 +237,7 @@ arg:
                         $$ = novo_no("arg", filhos, 1);
     }
 exp: fator
-    | exp OPERADOR_SOMA fator {
+    | exp OPERADOR_SOMA fator PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("+", NULL, 0);
@@ -234,7 +245,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
                             }
-    | exp OPERADOR_SUB fator {
+    | exp OPERADOR_SUB fator PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("-", NULL, 0);
@@ -242,7 +253,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
                             }
-    | exp OPERADOR_LOGICO_ADD fator {
+    | exp OPERADOR_LOGICO_ADD fator  {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("&&", NULL, 0);
@@ -250,7 +261,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
     }
-    | exp OPERADOR_LOGICO_OR fator {
+    | exp OPERADOR_LOGICO_OR fator PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("||", NULL, 0);
@@ -266,7 +277,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
     }
-    | primitivas fator OPERADOR_ATRIBUICAO stmt {
+    | primitivas fator OPERADOR_ATRIBUICAO stmt PV{
                             No** filhos = (No**) malloc(sizeof(No*)*4);
                             filhos[0] = $1;
                             filhos[1] = $2;
@@ -283,7 +294,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 4);
     }
-    | exp OPERADOR_ATRIBUICAO stmt {
+    | exp OPERADOR_ATRIBUICAO stmt PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("=", NULL, 0);
@@ -291,7 +302,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
     }
-    | exp operador fator {
+    | exp operador fator PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = $2;
@@ -299,7 +310,7 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);
     }
-    | abertura exp fechamento {
+    | abertura exp fechamento PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = $2;
@@ -307,17 +318,17 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);  
     }
-    | primitivas exp {
+    | primitivas fator PV {
                             No** filhos = (No**) malloc(sizeof(No*)*2);
                             filhos[0] = $1;
                             filhos[1] = $2;
 
-                            /*for(int i = 0; i < prox_posicao_livre; i++){
-                                if(strcmp($1, tabela_de_simbolos[i].lexema)){
-                                    printf("Variavel ja declarada!");
+                            for(int i = 0; i < prox_posicao_livre; i++){
+                                if(!strcmp($2, tabela_de_simbolos[i].lexema)){
+                                    printf("Variavel ja declarada! %s", $2);
                                     return;
                                 }
-                            }*/
+                            }
                             RegistroTS registro;
                             strncpy(registro.token, "ID", 50);
                             strncpy(registro.lexema, $2, 50);
@@ -328,18 +339,18 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 2);  
     }
-    |primitivas abertura exp fechamento exp {
+    |primitivas abertura exp fechamento exp PV {
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = $3;
                             filhos[2] = $5;
 
-                            /*for(int i = 0; i < prox_posicao_livre; i++){
-                                if(strcmp($5, tabela_de_simbolos[i].lexema)){
+                            for(int i = 0; i < prox_posicao_livre; i++){
+                                if(!strcmp($5, tabela_de_simbolos[i].lexema)){
                                     printf("Variavel ja declarada! %s", $5);
                                     return;
                                 }
-                            }*/
+                            }
                             RegistroTS registro;
                             strncpy(registro.token, "ID", 50);
                             strncpy(registro.lexema, $5, 50);
@@ -353,7 +364,7 @@ exp: fator
     ;
 
 fator: termo 
-    | fator OPERADOR_MUL termo {
+    | fator OPERADOR_MUL termo PV {
                                 No** filhos = (No**) malloc(sizeof(No*)*3);
                                 filhos[0] = $1;
                                 filhos[1] = novo_no("*", NULL, 0);
@@ -363,7 +374,7 @@ fator: termo
 
 
                                 }
-    | fator OPERADOR_DIV termo {
+    | fator OPERADOR_DIV termo PV {
                                 No** filhos = (No**) malloc(sizeof(No*)*3);
                                 filhos[0] = $1;
                                 filhos[1] = novo_no("/", NULL, 0);
