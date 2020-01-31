@@ -24,7 +24,8 @@ utilize os exemplos no diretório "flex" como ponto de partida.
 PRIMITIVAS									"int"|"float"|"char"|"double"|"unsigned"|"signed"|"void"|"string"
 PALAVRAS_RESERVADAS							"break"|"return"|"continue"
 ESTRUTURAS									"struct"|"typedef"
-CONDICIONAL									"if"|"else"|"switch"|"case"|"default"
+CONDICIONAL									"if"|"switch"|"case"|"default"
+ELSE										"else"
 LOOP										"while"|"for"|"do"|"goto"
 NUMBER										([0-9]+)
 NUMBER_FLOAT								([0-9]+)*[.]([0-9]+)
@@ -36,14 +37,19 @@ OPERADOR_LOGICO_NOT							"!"
 OPERACAO_LOGICA								"<"|">"|"<="|">="
 OPERADOR_UNARIO								("++"|"--"|"!")([a-zA-Z]*)|([a-zA-Z]*)("++"|"--"|"!")
 OPERADOR_ATRIBUICAO							"="
-ABERTURA									"\("|"\{"
-FECHAMENTO									"\)"|"\}"
+ABERTURA_PAR								"\("
+FECHAMENTO_PAR								"\)"
+ABERTURA_CHAVE								"\{"
+FECHAMENTO_CHAVE							"\}"
+ABERTURA_COLCHETE							"\["
+FECHAMENTO_COLCHETE							"\]"
 STRING										\"(\\.|[^"\\])*\"
 CARACTER 									(\')(.)(\')
 ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 %%
 
 {PRIMITIVAS}								{strncpy(yylval.simbolo, yytext, 50); return PRIMITIVAS;}
+{ELSE}										{return ELSE;}
 {PALAVRAS_RESERVADAS}						{return PALAVRAS_RESERVADAS;}
 {CONDICIONAL} 								{strncpy(yylval.simbolo, yytext, 50); return CONDICIONAL;}
 {LOOP}										{strncpy(yylval.simbolo, yytext, 50); return LOOP;}
@@ -55,6 +61,7 @@ ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 "\*"										{return OPERADOR_MUL;}
 "/"											{return OPERADOR_DIV;}
 "\-"										{return OPERADOR_SUB;}
+"\,"                                        {return VIRGULA;}
 {OPERACAO_LOGICA}							{strncpy(yylval.simbolo, yytext, 50); return OPERACAO_LOGICA;}
 {OPERADOR_LOGICO_ADD}						{return OPERADOR_LOGICO_ADD;}
 {OPERADOR_LOGICO_OR}						{return OPERADOR_LOGICO_OR;}
@@ -62,8 +69,12 @@ ENDERECO									[a-zA-Z]+|([a-zA-Z][_a-zA-Z0-9]*)(\[)([0-9]+|([a-zA-Z]+)(\]))
 {OPERADOR_LOGICO_NOT}						{return OPERADOR_LOGICO_NOT;}
 {OPERADOR_UNARIO}							{return OPERADOR_UNARIO;}
 {OPERADOR_ATRIBUICAO}						{return OPERADOR_ATRIBUICAO;}
-{ABERTURA}									{strncpy(yylval.simbolo, yytext, 50); return ABERTURA;}
-{FECHAMENTO}								{strncpy(yylval.simbolo, yytext, 50); return FECHAMENTO;}
+{ABERTURA_PAR}								{return ABERTURA_PAR;}
+{FECHAMENTO_PAR}							{return FECHAMENTO_PAR;}
+{ABERTURA_CHAVE}							{return ABERTURA_CHAVE;}
+{FECHAMENTO_CHAVE}							{return FECHAMENTO_CHAVE;}
+{ABERTURA_COLCHETE}							{return ABERTURA_COLCHETE;}
+{FECHAMENTO_COLCHETE}						{return FECHAMENTO_COLCHETE;}
 {STRING}									{strncpy(yylval.simbolo, yytext, 50); return STRING;}
 {CARACTER}									{strncpy(yylval.simbolo, yytext, 50); return CARACTER;}
 {ENDERECO}									{return ENDERECO;}
