@@ -66,23 +66,24 @@ extern int yydebug;
     OPERADOR_LOGICO_OR = 272,
     OPERADOR_LOGICO_COMPARACAO = 273,
     OPERADOR_LOGICO_NOT = 274,
-    OPERADOR_UNARIO = 275,
-    OPERADOR_ATRIBUICAO = 276,
-    ABERTURA_PAR = 277,
-    ABERTURA_CHAVE = 278,
-    ABERTURA_COLCHETE = 279,
-    FECHAMENTO_PAR = 280,
-    FECHAMENTO_CHAVE = 281,
-    FECHAMENTO_COLCHETE = 282,
-    STRING = 283,
-    CARACTER = 284,
-    FUNCAO = 285,
-    VETOR = 286,
-    TAMANHO_VETOR = 287,
-    ELSE = 288,
-    EOL = 289,
-    VIRGULA = 290,
-    PV = 291
+    OPERADOR_LOGICO_NOT_EQ = 275,
+    OPERADOR_UNARIO = 276,
+    OPERADOR_ATRIBUICAO = 277,
+    ABERTURA_PAR = 278,
+    ABERTURA_CHAVE = 279,
+    ABERTURA_COLCHETE = 280,
+    FECHAMENTO_PAR = 281,
+    FECHAMENTO_CHAVE = 282,
+    FECHAMENTO_COLCHETE = 283,
+    STRING = 284,
+    CARACTER = 285,
+    FUNCAO = 286,
+    VETOR = 287,
+    TAMANHO_VETOR = 288,
+    ELSE = 289,
+    EOL = 290,
+    VIRGULA = 291,
+    PV = 292
   };
 #endif
 
@@ -96,7 +97,7 @@ union YYSTYPE
     char simbolo[50];
     struct No* no;
 
-#line 100 "parser.tab.h"
+#line 101 "parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

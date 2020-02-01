@@ -64,6 +64,7 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %token OPERADOR_LOGICO_OR
 %token OPERADOR_LOGICO_COMPARACAO
 %token OPERADOR_LOGICO_NOT
+%token OPERADOR_LOGICO_NOT_EQ
 %token OPERADOR_UNARIO
 %token OPERADOR_ATRIBUICAO
 %token ABERTURA_PAR
@@ -86,6 +87,7 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %type<no> fator
 %type<no> exp
 %type<no> termo
+%type<no> stmts
 %type<no> stmt
 %type<no> operador
 %type<no> abertura
@@ -112,7 +114,8 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 %type<simbolo> OPERADOR_LOGICO_ADD
 %type<simbolo> OPERADOR_LOGICO_OR
 %type<simbolo> OPERADOR_LOGICO_COMPARACAO
-%type<simbolo> OPERADOR_LOGICO_NOT  
+%type<simbolo> OPERADOR_LOGICO_NOT
+%type<simbolo> OPERADOR_LOGICO_NOT_EQ  
 %type<simbolo> PRIMITIVAS
 %type<simbolo> VARIAVEL
 %type<simbolo> NUMBER
@@ -129,11 +132,26 @@ void inserir_na_tabela_de_simbolos(RegistroTS);
 /* Regras de Sintaxe */
 
 prog:                     
-    | prog stmt EOL       { imprimir_arvore($2); 
+    | prog stmts EOL       { imprimir_arvore($2); 
                             printf("\n");
                             imprimir_tabela_de_simbolos(tabela_de_simbolos);
                             printf("\n"); }
     ;
+
+stmts: stmt                 {
+                            No** filhos = (No**) malloc(sizeof(No*) * 1);
+                            filhos[0] = $1;
+
+                            $$ = novo_no("stmt", filhos, 1);
+}
+    | stmt stmts           {
+                            No** filhos = (No**) malloc(sizeof(No*) * 2);
+                            filhos[0] = $1;
+                            filhos[1] = $2;
+
+                            $$ = novo_no("stmts", filhos, 2);
+    }
+;
 
 stmt: exp
     | CONDICIONAL abertura exp fechamento stmt {
@@ -160,7 +178,7 @@ stmt: exp
 
                             $$ = novo_no("stmt", filhos, 3);
     }
-    | LOOP abertura exp fechamento abertura stmt  fechamento{
+    | LOOP abertura exp fechamento abertura stmt fechamento{
                             No** filhos = (No**) malloc(sizeof(No*) * 3);
                             filhos[0] = novo_no("while", NULL, 0);
                             filhos[1] = $3;
@@ -208,7 +226,6 @@ else:
 ;
 args: arg                   {
                             No** filhos = (No**) malloc(sizeof(No*) * 1);
-                            printf("teste args");
                             filhos[0] = $1;
 
                             $$ = novo_no("args", filhos, 1);
@@ -273,6 +290,14 @@ exp: fator
                             No** filhos = (No**) malloc(sizeof(No*)*3);
                             filhos[0] = $1;
                             filhos[1] = novo_no("==", NULL, 0);
+                            filhos[2] = $3;
+
+                            $$ = novo_no("exp", filhos, 3);
+    }
+    | exp OPERADOR_LOGICO_NOT_EQ fator {
+                            No** filhos = (No**) malloc(sizeof(No*)*3);
+                            filhos[0] = $1;
+                            filhos[1] = novo_no("!=", NULL, 0);
                             filhos[2] = $3;
 
                             $$ = novo_no("exp", filhos, 3);
