@@ -61,7 +61,6 @@ CARACTER 									(\')(.)(\')
 "/"											{return OPERADOR_DIV;}
 "\-"										{return OPERADOR_SUB;}
 "\,"                                        {return VIRGULA;}
-"\;"                                        {return PV;}
 {OPERACAO_LOGICA}							{strncpy(yylval.simbolo, yytext, 50); return OPERACAO_LOGICA;}
 {OPERADOR_LOGICO_ADD}						{return OPERADOR_LOGICO_ADD;}
 {OPERADOR_LOGICO_OR}						{return OPERADOR_LOGICO_OR;}

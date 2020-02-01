@@ -35,6 +35,44 @@ O Bison por sua vez, foi utilizado para a criação de regras de gramática para
 
 A Solução
 ---------
-Explicar em detalhes a implementação do seu parser, explicar os principais elementos da implementação
-especialmente o que diz respeito à análise léxica e sintática, como tokens e produções.
+* **A ESTRUTURA**
+
+O projeto conta com a seguinte estrutura de linguagem de programação:
+
+- Declaração de funções
+- Chamada de funções
+- Declaração de variáveis não inicializadas
+- Declaração de variáveis inicializadas
+- Declaração de Vetores
+- Atribuição à variáveis
+- Estrutura de repetição _While_
+- Estrutura de controle _if_*
+
+Além destas estruturas, os tipos primitivos presentes na pseudo-linguagem são:
+- Inteiro (int) - com 4 bytes;
+- Float (float) - com 32 bytes;
+- Double (double) - com 64 bytes;
+- Caractere (char) - com 4 bytes;
+
+
+* **O ANALISADOR LÉXICO**
+
+O analisador léxico possui diversos scanners que possibilitam, por exemplo, identificar algumas palavras reservadas e categoriza-las de acordo com o sub grupo de utilização ao qual elas pertencem evitando assim ambiguidade. Um bom exemplo disto são as estruturas que chamo de _PRIMITIVAS_ e _PALAVRAS\_RESERVADAS_ a primeira engloba os tipos de dados primitivos utilizados na declaração de funções e variáveis, a segunda por sua vez é utilizada para controle de fluxo dentro de rotinas de decisão ou de repetição. Apesar de ambas se categorizarem como palavras reservadas existe uma clara divisão na utilização de cada sub-categoria, e por isso foram feitos scanners especificos para cada sub categoria.
+
+Para a análise de variáveis foi feita a verificação através de Regex para verificar qualquer estrutura que contenha uma letra, maiúscula ou minuscula, seguida de nada ou mais letras, números ou underlines.
+
+Algo interessante de notar na gramática gerada é que, apesar de ser bastante baseada na linguagem C, esta não possui ponto e vírgula ao final das sentenças. 
+
+* **O ANALISADOR SINTÁTICO**
+O analizador sintático ao ser desenvolvido precisou ser pensado cuidadosamente para abarcar todas as possibilidades, principalmente quando se tratava de declarações, tanto para variáveis quanto para funções, desta forma este tem regras para declaração de funções com e sem argumentos e declaração de variáveis com e sem atribuíção.
+
+Uma peculiaridade da implementação se deve à uma dificuldade encontrada durante o desenvolvimento da regra para declaração de vetores em que foi necessario o uso de uma sintaxe alternativa para que este funcionasse da forma correta.
+
+
 Conclusão
+--------
+
+O trabalho, apesar de não estar perfeito consegue atender adequadamente às demandas solicitadas e representa bem as etapas em um processo de analise léxica e sintática para a geração de uma gramática não ambígua.
+
+Posso concluir que o trabalho foi bastante proveitoso e esclarecedor para os fins que se propós, uma vez que através dele foi possível compreender o processo responsável pela geração de gramáticas livre de contexto que permitem a geração de novas linguagens de programação.
+
