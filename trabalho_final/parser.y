@@ -399,6 +399,15 @@ exp: fator
 
                             $$ = novo_no("exp", filhos, 3);  
     }
+    | termo abertura termo fechamento OPERADOR_ATRIBUICAO exp {
+                            No** filhos = (No**) malloc(sizeof(No*)*4);
+                            filhos[0] = $2;
+                            filhos[1] = $4;
+                            filhos[2] = novo_no("=", NULL, 0);
+                            filhos[3] = $6;
+
+                            $$ = novo_no("exp", filhos, 4);
+    }
     ;
 
 fator: termo 
