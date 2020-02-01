@@ -64,6 +64,7 @@ Para a análise de variáveis foi feita a verificação através de Regex para v
 Algo interessante de notar na gramática gerada é que, apesar de ser bastante baseada na linguagem C, esta não possui ponto e vírgula ao final das sentenças. 
 
 * **O ANALISADOR SINTÁTICO**
+
 O analizador sintático ao ser desenvolvido precisou ser pensado cuidadosamente para abarcar todas as possibilidades, principalmente quando se tratava de declarações, tanto para variáveis quanto para funções, desta forma este tem regras para declaração de funções com e sem argumentos e declaração de variáveis com e sem atribuíção.
 
 Uma peculiaridade da implementação se deve à uma dificuldade encontrada durante o desenvolvimento da regra para declaração de vetores em que foi necessario o uso de uma sintaxe alternativa para que este funcionasse da forma correta.
